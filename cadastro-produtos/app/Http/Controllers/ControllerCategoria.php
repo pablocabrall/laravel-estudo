@@ -104,4 +104,10 @@ class ControllerCategoria extends Controller
         }
         return redirect('/categorias');
     }
+
+    public function indexJason()
+    {
+        $cats = Categoria::all();
+        return json_encode($cats);
+    }
 }
