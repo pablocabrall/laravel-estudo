@@ -4,38 +4,69 @@
    <div class="card border">
         <div class="card-body">
             <h5 class="card-title">Cadastro de Produtos</h5>
-        @if (count($produtos) > 0)
             <table class="table table-ordered table-hover">
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Nome Produto</th>
+                        <th>Nome</th>
                         <th>Quantidade</th>
                         <th>Preço</th>
                         <th>Categoria</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($produtos as $produto)
-                        <tr>
-                            <td>{{$produto->id}}</td>
-                            <td>{{$produto->nome}}</td>
-                            <td>{{$produto->estoque}}</td>
-                            <td>{{$produto->preco}}</td>
-                            <td>{{$produto->categoria_id}}</td>
-                            <td>
-                                <a href="/produtos/editar/{{$produto->id}}" class="btn btn-primary">Editar</a>
-                                <a href="/produtos/apagar/{{$produto->id}}" class="btn btn-danger">Apagar</a>
-                            </td>
-                        </tr>
-                    @endforeach
+              
                 </tbody>
             </table>
-        @endif
         </div>
         <div class="card-footer">
-            <a href="/produtos/novo" class="btn bnt-sm btn-primary">Novo Produto</a>
-        </div>
-        
+            <button class="btn btn-sm btn-primary">Novo Produto</button>
+        </div>        
    </div>
-@endsection
+   <div class="modal" tabindex="-1" role="dialog" id="dlgprodutos">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" id="formproduto">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Novo Produto</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="idproduto" class="form-control">
+                        <div class="form-group">
+                            <label for="nomeProduto" class="control-label">Nome do Produto</label>
+                            <div class="input-group">
+                                <input type="text" name="nomeProduto" id="nomeProduto" class="form-control" placeholder="Nome do Produto">
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <label for="precoProduto" class="control-label">Preço</label>
+                            <div class="input-group">
+                                <input type="text" name="precoProduto" id="precoProduto" class="form-control" placeholder="Preço do Produto">
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <label for="qtdProduto" class="control-label">Quantidade</label>
+                            <div class="input-group">
+                                <input type="number" name="qtdProduto" id="qtdProduto" class="form-control" placeholder="Quantidade do Produto">
+                            </div>
+                        </div> 
+
+                        <div class="form-group">
+                            <label for="categoriaProduto" class="control-label">Categoria</label>
+                            <div class="input-group">
+                               <select class="form-control" name="categoriaProduto" id="categoriaProduto"></select>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="cancel" data-dissmiss="modal" class="btn btn-primary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+   </div>
+@endsection  
