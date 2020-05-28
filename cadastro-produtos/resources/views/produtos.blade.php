@@ -21,7 +21,7 @@
             </table>
         </div>
         <div class="card-footer">
-            <button class="btn btn-sm btn-primary">Novo Produto</button>
+            <button class="btn btn-sm btn-primary" onclick="novoProduto();">Novo Produto</button>
         </div>        
    </div>
    <div class="modal" tabindex="-1" role="dialog" id="dlgprodutos">
@@ -70,3 +70,18 @@
         </div>
    </div>
 @endsection  
+
+@section('javascript')
+    
+    <script type="text/javascript">
+
+        function novoProduto(){
+            $('#idproduto').val('');
+            $('#nomeProduto').val('');
+            $('#precoProduto').val('');
+            $('#qtdProduto').val('');
+
+            $('#dlgprodutos').modal('show');
+        }
+    </script>
+@endsection
