@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/categorias', 'ControllerCategoria@indexJason');
+Route::resource('/produtos', 'ControllerProduto');
