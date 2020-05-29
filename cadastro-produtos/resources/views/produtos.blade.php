@@ -83,5 +83,20 @@
 
             $('#dlgprodutos').modal('show');
         }
+
+        function carregarCategorias(){
+            $.getJSON('/api/categorias', function(data){
+                for(i=0; i<data.length; i++){
+                    option = '<option value="'+ data[i].id +'">' + data[i].nome + '</option>';
+                    
+                    $('#categoriaProduto').append(option);
+                }
+            })
+        }
+
+        $(function(){
+            carregarCategorias();
+        })
+
     </script>
 @endsection
