@@ -9,16 +9,18 @@ use App\Categoria;
 
 class ControllerProduto extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function indexView()
     {
         
         $produtos = Produto::all(); 
         return view('produtos', compact('produtos'));
+    }
+
+    public function index()
+    {
+        
+        $prods = Produto::all(); 
+        return $prods->toJson();
     }
 
     /**
