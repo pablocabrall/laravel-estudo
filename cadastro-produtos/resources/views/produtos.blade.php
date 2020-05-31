@@ -74,7 +74,14 @@
 @section('javascript')
     
     <script type="text/javascript">
-        
+
+        $.ajaxSetup({
+            headers:{
+                'x-CSRF-TOKEN': "{{ csrf_token() }}"
+            }
+        });  
+
+
         function montarLinha(p){
             var linha = "<tr>"+
             "<td>" + p.id + "</td>" +
