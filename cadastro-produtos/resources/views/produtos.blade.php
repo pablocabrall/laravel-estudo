@@ -27,43 +27,42 @@
    <div class="modal" tabindex="-1" role="dialog" id="dlgprodutos">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form class="form-horizontal" id="formproduto">
+                <form class="form-horizontal" id="formproduto" >
                     <div class="modal-header">
                         <h5 class="modal-title">Novo Produto</h5>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="idproduto" class="form-control">
                         <div class="form-group">
-                            <label for="nomeProduto" class="control-label">Nome do Produto</label>
+                            <label for="nome" class="control-label">Nome do Produto</label>
                             <div class="input-group">
-                                <input type="text" name="nomeProduto" id="nomeProduto" class="form-control" placeholder="Nome do Produto">
+                                <input type="text" name="nome" id="nomeProduto" class="form-control" placeholder="Nome do Produto">
                             </div>
                         </div> 
 
                         <div class="form-group">
-                            <label for="precoProduto" class="control-label">Preço</label>
+                            <label for="preco" class="control-label">Preço</label>
                             <div class="input-group">
-                                <input type="text" name="precoProduto" id="precoProduto" class="form-control" placeholder="Preço do Produto">
+                                <input type="number" name="preco" id="precoProduto" class="form-control" placeholder="Preço do Produto">
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="quantidade" class="control-label">Quantidade</label>
+                            <div class="input-group">
+                                <input type="number" name="quantidade" id="qtdProduto" class="form-control" placeholder="Quantidade do Produto">
                             </div>
                         </div> 
 
                         <div class="form-group">
-                            <label for="qtdProduto" class="control-label">Quantidade</label>
+                            <label for="categoria" class="control-label">Categoria</label>
                             <div class="input-group">
-                                <input type="number" name="qtdProduto" id="qtdProduto" class="form-control" placeholder="Quantidade do Produto">
-                            </div>
-                        </div> 
-
-                        <div class="form-group">
-                            <label for="categoriaProduto" class="control-label">Categoria</label>
-                            <div class="input-group">
-                               <select class="form-control" name="categoriaProduto" id="categoriaProduto"></select>
+                               <select class="form-control" name="categoria" id="categoria"></select>
                             </div>
                         </div> 
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="cancel" data-dissmiss="modal" class="btn btn-primary">Cancelar</button>
+                        <button type="cancel" data-dismiss="modal" class="btn btn-primary">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -74,13 +73,33 @@
 @section('javascript')
     
     <script type="text/javascript">
-
+        
         $.ajaxSetup({
             headers:{
                 'x-CSRF-TOKEN': "{{ csrf_token() }}"
             }
-        });  
+        }); 
 
+
+        function novoProduto(){
+            $('#idproduto').val('');
+            $('#nomeProduto').val('');
+            $('#precoProduto').val('');
+            $('#qtdProduto').val('');
+
+            $('#dlgprodutos').modal('show');
+        }
+
+
+        function carregarCategorias(){
+            $.getJSON('/api/categorias', function(data){
+                for(i=0; i<data.length; i++){
+                    option = '<option value="'+ data[i].id +'">' + data[i].nome + '</option>';
+                    
+                    $('#categoria').append(option);
+                }
+            });
+        }
 
         function montarLinha(p){
             var linha = "<tr>"+
@@ -88,7 +107,7 @@
             "<td>" + p.nome + "</td>" +
             "<td>" + p.estoque + "</td>" +
             "<td>" + p.preco + "</td>" +
-            "<td>" + p.categoria_id + "</td>" +
+            "<td>" + p.categoria + "</td>" +
             "<td>" +  
                 '<button class="btn btn-sm btn-primary">Editar</button>' +
                 '   <button class="btn btn-sm btn-danger">Apagar</button>' +
@@ -106,24 +125,32 @@
             });
         }
 
-        function novoProduto(){
-            $('#idproduto').val('');
-            $('#nomeProduto').val('');
-            $('#precoProduto').val('');
-            $('#qtdProduto').val('');
+        function criarProduto(){
+            var categoria = 
+        
+            produtos = {
+                nome: $("#nomeProduto").val(),
+                preco: $("#precoProduto").val(),
+                quantidade: $("#qtdProduto").val(),
+                categoria: $("#categoria").val()
+            }
 
-            $('#dlgprodutos').modal('show');
+            $.post("/api/produtos", produtos, function(data){
+               var produto = JSON.parse(data);
+                var linha = montarLinha(produto);
+                $('#tabelaProdutos>tbody').append(linha);          
+            
+            });
         }
 
-        function carregarCategorias(){
-            $.getJSON('/api/categorias', function(data){
-                for(i=0; i<data.length; i++){
-                    option = '<option value="'+ data[i].id +'">' + data[i].nome + '</option>';
-                    
-                    $('#categoriaProduto').append(option);
-                }
-            })
-        }
+        $("#formproduto").submit(function(event){
+            event.preventDefault();
+            criarProduto();
+            $("#dlgprodutos").modal('hide');
+        })  
+    
+
+
 
         $(function(){
             carregarCategorias();
