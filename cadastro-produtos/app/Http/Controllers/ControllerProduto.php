@@ -18,7 +18,6 @@ class ControllerProduto extends Controller
 
     public function index()
     {
-        
         $prods = Produto::all(); 
         return $prods->toJson();
     }
@@ -43,13 +42,13 @@ class ControllerProduto extends Controller
     public function store(Request $request)
     {
         $produto = new Produto();
-        $produto->nome = $request->input('nomeProduto');
-        $produto->estoque = $request->input('estoqueProduto');
-        $produto->preco = $request->input('precoProduto');
-        $produto->categoria_id = $request->input('categoriaProduto');
+        $produto->nome = $request->input('nome');
+        $produto->estoque = $request->input('quantidade');
+        $produto->preco = $request->input('preco');
+        $produto->categoria = $request->input('categoria');
         $produto->save(); 
-        return redirect('/produtos');
         
+        return json_encode($produto);   
     }
 
     /**
