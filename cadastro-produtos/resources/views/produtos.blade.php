@@ -83,9 +83,9 @@
 
         function novoProduto(){
             $('#idproduto').val('');
-            $('#nomeProduto').val('');
-            $('#precoProduto').val('');
-            $('#qtdProduto').val('');
+            $('#nomeProduto').val('teclado');
+            $('#precoProduto').val(20);
+            $('#qtdProduto').val(10);
 
             $('#dlgprodutos').modal('show');
         }
@@ -109,8 +109,8 @@
             "<td>" + p.preco + "</td>" +
             "<td>" + p.categoria + "</td>" +
             "<td>" +  
-                '<button class="btn btn-sm btn-primary">Editar</button>' +
-                '   <button class="btn btn-sm btn-danger">Apagar</button>' +
+                '<button class="btn btn-sm btn-primary" onclick="editar(' + p.id + ' )">Editar</button>' +
+                '   <button class="btn btn-sm btn-danger"  onclick="remove(this); removerProduto(' + p.id + ')" >Apagar</button>' +
              "</td>" +
             "<tr>";
             return linha;
@@ -142,6 +142,36 @@
             
             });
         }
+
+
+
+        function removerProduto(id){
+            $.ajax({
+                type: "DELETE",
+                url: "/api/produtos/" + id,
+                context: this,
+                success: function() {
+                    
+                    console.log('removido com sucesso')
+                        
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
+        }
+
+        (function($) {
+        remove = function(item) {
+            var tr = $(item).closest('tr');
+
+            tr.fadeOut(400, function() {
+            tr.remove();  
+         });
+
+            return false;
+        }
+        })(jQuery);
 
         $("#formproduto").submit(function(event){
             event.preventDefault();
