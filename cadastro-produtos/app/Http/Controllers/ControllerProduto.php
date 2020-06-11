@@ -118,8 +118,9 @@ class ControllerProduto extends Controller
         $produto = Produto::find($id);
         if(isset($produto)){
             $produto->delete();
-
+            return response('OK', 200);
         }
-        return redirect('/produtos');
+        return response('Produto não encontrado', 404);
+        
     }
 }
