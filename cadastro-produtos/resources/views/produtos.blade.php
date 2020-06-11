@@ -109,11 +109,23 @@
             "<td>" + p.preco + "</td>" +
             "<td>" + p.categoria + "</td>" +
             "<td>" +  
-                '<button class="btn btn-sm btn-primary" onclick="editar(' + p.id + ' )">Editar</button>' +
+                '<button class="btn btn-sm btn-primary" onclick="editarProduto(' + p.id + ' )">Editar</button>' +
                 '   <button class="btn btn-sm btn-danger"  onclick="remove(this); removerProduto(' + p.id + ')" >Apagar</button>' +
              "</td>" +
             "<tr>";
             return linha;
+        }
+
+       function editarProduto(id){
+            $.getJSON('/api/produtos/'+id, function(produtos){
+                $('#idproduto').val(produtos.id);
+                $('#nomeProduto').val(produtos.nome);
+                $('#precoProduto').val(produtos.preco);
+                $('#qtdProduto').val(produtos.estoque);
+                $('#categoria').val(produtos.categoria);
+
+                $('#dlgprodutos').modal('show');
+            });
         }
 
         function carregarProdutos(){
@@ -125,9 +137,32 @@
             });
         }
 
-        function criarProduto(){
-            var categoria = 
-        
+        function salvarProduto(){
+            produtos = {
+                id: $('#idproduto').val(),
+                nome: $("#nomeProduto").val(),
+                preco: $("#precoProduto").val(),
+                quantidade: $("#qtdProduto").val(),
+                categoria: $("#categoria").val()
+            };
+
+            $.ajax({
+                type: "PUT",
+                url: "/api/produtos/" + produtos.id,
+                context: this,
+                data: produtos,
+                success: function() {
+                    
+                    console.log('salvo com sucesso')
+                        
+                },
+                error: function(error){
+                    console.log(error)
+                }
+            })
+
+        }   
+        function criarProduto(){    
             produtos = {
                 nome: $("#nomeProduto").val(),
                 preco: $("#precoProduto").val(),
@@ -175,7 +210,15 @@
 
         $("#formproduto").submit(function(event){
             event.preventDefault();
-            criarProduto();
+            
+            if($('#idproduto').val() != ''){
+                salvarProduto();
+                
+             } else {
+                criarProduto();
+                
+             }
+            
             $("#dlgprodutos").modal('hide');
         })  
     
