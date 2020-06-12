@@ -102,7 +102,7 @@
         }
 
         function montarLinha(p){
-            var linha = "<tr>"+
+            var linha = "<tr class='produto'>"+
             "<td>" + p.id + "</td>" +
             "<td>" + p.nome + "</td>" +
             "<td>" + p.estoque + "</td>" +
@@ -151,8 +151,25 @@
                 url: "/api/produtos/" + produtos.id,
                 context: this,
                 data: produtos,
-                success: function() {
+                success: function(data) {
+                    produto = JSON.parse(data);
+                    linhas = $("#tabelaProdutos>tbody>tr.produto");
                     
+                    for(i=0; i<linhas.length; i++){ 
+                        if(linhas[i].cells[0].textContent == produtos.id){ 
+                             e = linhas[i]
+                             console.log(e.cells[0].textContent);
+                      }
+                    }
+
+
+                    if(e){
+                        e.cells[0].textContent = produto.id;
+                        e.cells[1].textContent = produto.nome;
+                        e.cells[2].textContent = produto.estoque;
+                        e.cells[3].textContent = produto.preco;
+                        e.cells[4].textContent = produto.categoria;
+                    }
                     console.log('salvo com sucesso')
                         
                 },
