@@ -14,7 +14,9 @@ class CreateEnderecosTable extends Migration
     public function up()
     {
         Schema::create('enderecos', function (Blueprint $table) {
-            $table->id();
+            $table->string('rua');
+            $table->integer('numero');
+            
             $table->timestamps();
         });
     }
